@@ -21,6 +21,13 @@
         <p id="message"></p>
     </section>
 
+    <section>
+        <h2>テスト送信</h2>
+        <p>今の未払いリストを自分だけに送信します</p>
+        <button onclick="sendTest()">今すぐ送信</button>
+        <p id="test-message"></p>
+    </section>
+
     <script>
         window.onload = async () => {
             const res = await fetch("/settings/remind_time");
@@ -29,6 +36,12 @@
                 document.getElementById("remind_time").value = data.value;
             }
         };
+
+        async function sendTest() {
+            const res = await fetch("/send-test", { method: "POST" });
+            const data = await res.json();
+            document.getElementById("test-message").textContent = data.message;
+        }
 
         async function saveSetting() {
             const value = document.getElementById("remind_time").value;

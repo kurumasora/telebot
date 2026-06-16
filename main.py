@@ -2,7 +2,15 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import Optional
+from dotenv import load_dotenv
+import os
+import asyncio
 import database
+
+load_dotenv()
+
+TOKEN = os.getenv("TOKEN")
+MY_CHAT_ID = int(os.getenv("MY_CHAT_ID"))
 
 app = FastAPI()
 
@@ -48,5 +56,21 @@ def get_setting(key: str):
 def save_setting(key: str, data: SettingIn):
     database.save_setting(key, data.value)
     return {"message": "保存しました"}
+
+@app.post("/send-test")
+async def send_test():
+    from telegram import Bot
+    records = database.get_unpaid_records()
+    if not records:
+        return {"message": "未払いの台帳がありません"}
+
+    lines = ["<b>おごりおごられ未払いリスト（テスト送信）</b>\n"]
+    for r in records:
+        lines.append(f"・{r['lender']} → {r['borrower']}：{r['amount']}円　{r['memo'] or ''}")
+
+    text = "\n".join(lines)
+    bot = Bot(token=TOKEN)
+    await bot.send_message(chat_id=MY_CHAT_ID, text=text, parse_mode="HTML")
+    return {"message": "送信しました"}
 
 app.mount("/", StaticFiles(directory="static", html=True), name="static")

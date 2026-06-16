@@ -1,16 +1,7 @@
-// UTCの日時文字列をJSTに変換して表示
-function toJST(utcStr) {
-    if (!utcStr) return "";
-    const dt = new Date(utcStr + "Z");
-    return dt.toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" });
-}
-
-// ページ読み込み時に一覧を取得
 window.onload = () => {
     fetchRecords();
 };
 
-// 台帳一覧を取得して表示
 async function fetchRecords() {
     const res = await fetch("/records");
     const records = await res.json();
@@ -25,7 +16,6 @@ async function fetchRecords() {
             <td>${record.borrower}</td>
             <td>${record.amount}円</td>
             <td>${record.memo ?? ""}</td>
-            <td>${toJST(record.remind_at)}</td>
             <td>${record.paid ? "完済" : "未払い"}</td>
             <td>
                 <button onclick="markPaid(${record.id})">完済</button>
@@ -36,14 +26,12 @@ async function fetchRecords() {
     });
 }
 
-// 台帳に追加
 async function addRecord() {
     const data = {
-        lender:    document.getElementById("lender").value,
-        borrower:  document.getElementById("borrower").value,
-        amount:    Number(document.getElementById("amount").value),
-        memo:      document.getElementById("memo").value,
-        remind_at: document.getElementById("remind_at").value || null,
+        lender:   document.getElementById("lender").value,
+        borrower: document.getElementById("borrower").value,
+        amount:   Number(document.getElementById("amount").value),
+        memo:     document.getElementById("memo").value,
     };
 
     await fetch("/records", {
@@ -55,13 +43,11 @@ async function addRecord() {
     fetchRecords();
 }
 
-// 完済マーク
 async function markPaid(id) {
     await fetch(`/records/${id}/paid`, { method: "PATCH" });
     fetchRecords();
 }
 
-// 削除
 async function deleteRecord(id) {
     await fetch(`/records/${id}`, { method: "DELETE" });
     fetchRecords();

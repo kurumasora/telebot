@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>設定</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="/">台帳</a>
+        <a href="/settings.html">設定</a>
+    </nav>
+
+    <h1>設定</h1>
+
+    <section>
+        <h2>リマインド時刻</h2>
+        <p>毎日この時刻に未払いの台帳をTelegramへ送信します（JST）</p>
+        <input id="remind_time" type="time" />
+        <button onclick="saveSetting()">保存</button>
+        <p id="message"></p>
+    </section>
+
+    <script>
+        window.onload = async () => {
+            const res = await fetch("/settings/remind_time");
+            const data = await res.json();
+            if (data.value) {
+                document.getElementById("remind_time").value = data.value;
+            }
+        };
+
+        async function saveSetting() {
+            const value = document.getElementById("remind_time").value;
+            await fetch("/settings/remind_time", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ value }),
+            });
+            document.getElementById("message").textContent = "保存しました";
+        }
+    </script>
+</body>
+</html>

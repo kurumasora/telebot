@@ -6,20 +6,22 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <nav>
+        <a href="/">台帳</a>
+        <a href="/settings.html">設定</a>
+    </nav>
+
     <h1>おごりおごられ台帳</h1>
 
-    <!-- 追加フォーム -->
     <section id="form-section">
         <h2>新規追加</h2>
         <input id="lender" placeholder="貸した人" />
         <input id="borrower" placeholder="借りた人" />
         <input id="amount" type="number" placeholder="金額" />
-        <input id="memo" placeholder="メモ" />
-        <input id="remind_at" type="datetime-local" />
+        <input id="memo" placeholder="メモ（はま代など）" />
         <button onclick="addRecord()">追加</button>
     </section>
 
-    <!-- 台帳一覧 -->
     <section id="list-section">
         <h2>台帳一覧</h2>
         <table id="ledger-table">
@@ -29,7 +31,6 @@
                     <th>借りた人</th>
                     <th>金額</th>
                     <th>メモ</th>
-                    <th>リマインド日時</th>
                     <th>状態</th>
                     <th>操作</th>
                 </tr>

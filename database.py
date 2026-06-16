@@ -15,7 +15,7 @@ def init_db():
             lender      TEXT NOT NULL,
             borrower    TEXT NOT NULL,
             amount      INTEGER NOT NULL,
-            memo        TEXT,
+            content        TEXT,
             paid        INTEGER DEFAULT 0,
             created_at  TEXT DEFAULT (datetime('now'))
         )
@@ -29,12 +29,12 @@ def init_db():
     conn.commit()
     conn.close()
 
-def add_record(lender, borrower, amount, memo):
+def add_record(lender, borrower, amount, content):
     conn = get_connection()
     conn.execute("""
-        INSERT INTO ledger (lender, borrower, amount, memo)
+        INSERT INTO ledger (lender, borrower, amount, content)
         VALUES (?, ?, ?, ?)
-    """, (lender, borrower, amount, memo))
+    """, (lender, borrower, amount, content))
     conn.commit()
     conn.close()
 

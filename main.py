@@ -18,7 +18,7 @@ class RecordIn(BaseModel):
     lender: str
     borrower: str
     amount: int
-    memo: Optional[str] = None
+    content: Optional[str] = None
 
 class SettingIn(BaseModel):
     value: str
@@ -34,7 +34,7 @@ def get_records():
 
 @app.post("/records")
 def create_record(data: RecordIn):
-    database.add_record(data.lender, data.borrower, data.amount, data.memo)
+    database.add_record(data.lender, data.borrower, data.amount, data.content)
     return {"message": "追加しました"}
 
 @app.patch("/records/{id}/paid")
@@ -66,7 +66,7 @@ async def send_test():
 
     lines = ["<b>おごりおごられ未払いリスト（テスト送信）</b>\n"]
     for r in records:
-        lines.append(f"・{r['lender']} → {r['borrower']}：{r['amount']}円　{r['memo'] or ''}")
+        lines.append(f"・{r['content'] or ''}：{r['amount']}円（from {r['lender']} to {r['borrower']}）")
 
     text = "\n".join(lines)
     bot = Bot(token=TOKEN)

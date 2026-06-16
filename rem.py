@@ -37,9 +37,9 @@ async def check_reminders(context: ContextTypes.DEFAULT_TYPE):
     if not records:
         return
 
-    lines = ["<b>おごりおごられ未払いリスト</b>\n"]
+    lines = ["<b>おごりおごられリマインダー</b>\n"]
     for r in records:
-        lines.append(f"・{r['lender']} → {r['borrower']}：{r['amount']}円　{r['memo'] or ''}")
+        lines.append(f"・{r['content'] or ''}：{r['amount']}円（from {r['lender']} to {r['borrower']}）")
 
     text = "\n".join(lines)
 

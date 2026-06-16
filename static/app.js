@@ -12,10 +12,10 @@ async function fetchRecords() {
     records.forEach(record => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
+            <td>${record.content ?? ""}</td>
+            <td>${record.amount}円</td>
             <td>${record.lender}</td>
             <td>${record.borrower}</td>
-            <td>${record.amount}円</td>
-            <td>${record.memo ?? ""}</td>
             <td>${record.paid ? "完済" : "未払い"}</td>
             <td>
                 <button onclick="markPaid(${record.id})">完済</button>
@@ -31,7 +31,7 @@ async function addRecord() {
         lender:   document.getElementById("lender").value,
         borrower: document.getElementById("borrower").value,
         amount:   Number(document.getElementById("amount").value),
-        memo:     document.getElementById("memo").value,
+        content:     document.getElementById("content").value,
     };
 
     await fetch("/records", {

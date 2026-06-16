@@ -11,14 +11,14 @@
         <a href="/settings.html">設定</a>
     </nav>
 
-    <h1>おごりおごられ台帳</h1>
+    <h1>おごりおごられリマインダー</h1>
 
     <section id="form-section">
         <h2>新規追加</h2>
-        <input id="lender" placeholder="貸した人" />
-        <input id="borrower" placeholder="借りた人" />
+        <input id="content" placeholder="内容" />
         <input id="amount" type="number" placeholder="金額" />
-        <input id="memo" placeholder="メモ（はま代など）" />
+        <input id="lender" placeholder="貸した人(任意)" />
+        <input id="borrower" placeholder="借りた人(任意)" />
         <button onclick="addRecord()">追加</button>
     </section>
 
@@ -27,10 +27,10 @@
         <table id="ledger-table">
             <thead>
                 <tr>
+                    <th>メモ</th>
+                    <th>金額</th>
                     <th>貸した人</th>
                     <th>借りた人</th>
-                    <th>金額</th>
-                    <th>メモ</th>
                     <th>状態</th>
                     <th>操作</th>
                 </tr>

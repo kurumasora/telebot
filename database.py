@@ -15,7 +15,7 @@ def init_db():
             lender      TEXT NOT NULL,
             borrower    TEXT NOT NULL,
             amount      INTEGER NOT NULL,
-            content        TEXT,
+            content     TEXT,
             paid        INTEGER DEFAULT 0,
             created_at  TEXT DEFAULT (datetime('now'))
         )
@@ -26,6 +26,14 @@ def init_db():
             value   TEXT NOT NULL
         )
     """)
+    # 既存テーブルに不足カラムがあれば追加
+    existing = {row[1] for row in conn.execute("PRAGMA table_info(ledger)")}
+    migrations = {
+        "content": "ALTER TABLE ledger ADD COLUMN content TEXT",
+    }
+    for col, sql in migrations.items():
+        if col not in existing:
+            conn.execute(sql)
     conn.commit()
     conn.close()
 

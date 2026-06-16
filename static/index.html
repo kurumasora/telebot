@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>おごりおごられ台帳</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>おごりおごられ台帳</h1>
+
+    <!-- 追加フォーム -->
+    <section id="form-section">
+        <h2>新規追加</h2>
+        <input id="lender" placeholder="貸した人" />
+        <input id="borrower" placeholder="借りた人" />
+        <input id="amount" type="number" placeholder="金額" />
+        <input id="memo" placeholder="メモ" />
+        <input id="remind_at" type="datetime-local" />
+        <button onclick="addRecord()">追加</button>
+    </section>
+
+    <!-- 台帳一覧 -->
+    <section id="list-section">
+        <h2>台帳一覧</h2>
+        <table id="ledger-table">
+            <thead>
+                <tr>
+                    <th>貸した人</th>
+                    <th>借りた人</th>
+                    <th>金額</th>
+                    <th>メモ</th>
+                    <th>リマインド日時</th>
+                    <th>状態</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="ledger-body">
+            </tbody>
+        </table>
+    </section>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -22,6 +22,9 @@ async def start_command(update: ContextTypes.DEFAULT_TYPE, context: ContextTypes
 
 
 async def check_reminders(context: ContextTypes.DEFAULT_TYPE):
+    if database.get_setting("remind_enabled") == "false":
+        return
+
     remind_time = database.get_setting("remind_time")
     if not remind_time:
         return

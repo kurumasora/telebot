@@ -22,6 +22,12 @@
     </section>
 
     <section>
+        <h2>リマインド停止</h2>
+        <p id="remind-status">状態を確認中...</p>
+        <button id="remind-toggle-btn" onclick="toggleRemind()"></button>
+    </section>
+
+    <section>
         <h2>テスト送信</h2>
         <p>今の未払いリストを自分だけに送信します</p>
         <button onclick="sendTest()">今すぐ送信</button>
@@ -29,13 +35,37 @@
     </section>
 
     <script>
+        let remindEnabled = true;
+
         window.onload = async () => {
             const res = await fetch("/settings/remind_time");
             const data = await res.json();
             if (data.value) {
                 document.getElementById("remind_time").value = data.value;
             }
+
+            const enabledRes = await fetch("/settings/remind_enabled");
+            const enabledData = await enabledRes.json();
+            remindEnabled = enabledData.value !== "false";
+            renderRemindStatus();
         };
+
+        function renderRemindStatus() {
+            document.getElementById("remind-status").textContent =
+                remindEnabled ? "リマインドは有効です" : "リマインドは停止中です";
+            document.getElementById("remind-toggle-btn").textContent =
+                remindEnabled ? "リマインドを停止する" : "リマインドを再開する";
+        }
+
+        async function toggleRemind() {
+            remindEnabled = !remindEnabled;
+            await fetch("/settings/remind_enabled", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ value: remindEnabled ? "true" : "false" }),
+            });
+            renderRemindStatus();
+        }
 
         async function sendTest() {
             const res = await fetch("/send-test", { method: "POST" });
